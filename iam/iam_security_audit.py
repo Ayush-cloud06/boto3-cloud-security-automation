@@ -1,4 +1,6 @@
 import boto3
+import csv
+
 from datetime import datetime, timezone
 
 iam = boto3.client("iam")
