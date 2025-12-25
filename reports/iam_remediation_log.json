@@ -1,0 +1,20 @@
+[
+  {
+    "username": "****",
+    "access_key": "AKIA****",
+    "age_days": 181,
+    "status": "FAIL",
+    "decision": "DISABLE",
+    "mode": "DRY-RUN",
+    "timestamp": "2025-12-25T08:08:18.932742+00:00"
+  },
+  {
+    "username": "****",
+    "access_key": "AKIA****",
+    "age_days": 125,
+    "status": "WARN",
+    "decision": "ROTATE",
+    "mode": "DRY-RUN",
+    "timestamp": "2025-12-25T08:08:18.932742+00:00"
+  }
+]
