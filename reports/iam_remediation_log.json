@@ -1,20 +1,26 @@
 [
   {
+    "control_id": "IAM.KEY.ROTATION",
     "username": "****",
     "access_key": "AKIA****",
     "age_days": 181,
     "status": "FAIL",
+    "severity": "HIGH",
+    "reason": "Access key age exceeds 180 days",
     "decision": "DISABLE",
     "mode": "DRY-RUN",
-    "timestamp": "2025-12-25T08:08:18.932742+00:00"
+    "timestamp": "2025-12-25T13:40:25.062711+00:00"
   },
   {
+    "control_id": "IAM.KEY.ROTATION",
     "username": "****",
     "access_key": "AKIA****",
     "age_days": 125,
     "status": "WARN",
+    "severity": "MEDIUM",
+    "reason": "Access key age exceeds 90 days",
     "decision": "ROTATE",
     "mode": "DRY-RUN",
-    "timestamp": "2025-12-25T08:08:18.932742+00:00"
+    "timestamp": "2025-12-25T13:40:25.062711+00:00"
   }
 ]

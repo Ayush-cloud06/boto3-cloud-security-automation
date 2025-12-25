@@ -13,15 +13,13 @@ OUTPUT_FILE = "reports/iam_remediation_log.json"
 iam = boto3.client("iam")
 
 logs = []
-
 now = datetime.now(timezone.utc)
 
-response = iam.list_users()
-users = response["Users"]
+users = iam.list_users()["Users"]
 
 for user in users:
     username = user["UserName"]
-
+  # Access key check
     keys = iam.list_access_keys(UserName=username)["AccessKeyMetadata"]
 
     for key in keys:
@@ -32,18 +30,31 @@ for user in users:
         if age_days > FAIL_DAYS:
             decision = "DISABLE"
             status = "FAIL"
+            severity = "HIGH"
+            reason = f"Access key age exceeds {FAIL_DAYS} days" 
+
         elif age_days > WARN_DAYS:
             decision = "ROTATE"
             status = "WARN"
+            severity = "MEDIUM"
+            reason = f"Access key age exceeds {WARN_DAYS} days" 
+
         else:
             decision = "NONE"
             status = "PASS"
+            severity = "LOW"
+            reason = "Access key age within compliant limits"
+
+
 
         log_entry = {
+            "control_id": "IAM.KEY.ROTATION",
             "username": username,
             "access_key": key_id[:4] + "****",
             "age_days": age_days,
             "status": status,
+            "severity": severity,
+            "reason": reason,
             "decision": decision,
             "mode": "ENFORCE" if ENFORCE else "DRY-RUN",
             "timestamp": now.isoformat()
@@ -61,6 +72,41 @@ for user in users:
                 print(f"[DRY-RUN] Would disable key {key_id} for user {username}")
 
         logs.append(log_entry)
+
+        # MFA check
+
+        try:
+            iam.get_login_profile(UserName=username)
+            has_console_access = True
+        except iam.exceptions.NoSuchEntityException:
+            has_console_access = False
+
+            if has_console_access:
+                mfa_devices = iam.list_mfa_devices(UserName=username)["MFADevices"]
+
+                if not mfa_devices:
+                    logs.append({
+                            "control_id": "IAM.MFA.ENFORCEMENT",
+                            "username": username,
+                            "status": "FAIL",
+                            "severity": "HIGH",
+                            "decision": "USER_ACTION_REQUIRED",
+                            "reason": "Console access without MFA",
+                            "mode": "DETECT_ONLY",
+                            "timestamp": now.isoformat()
+                    })
+                else:
+                    logs.append({
+                        "control_id": "IAM.MFA.ENFORCEMENT",
+                        "username": username,
+                        "status": "PASS",
+                        "severity": "LOW",
+                        "decision": "NONE",
+                        "reason": "MFA enabled for console access",
+                        "mode": "DETECT_ONLY",
+                        "timestamp": now.isoformat()
+                    })
+
 
 # Write remediation log
 with open(OUTPUT_FILE, "w") as f:
