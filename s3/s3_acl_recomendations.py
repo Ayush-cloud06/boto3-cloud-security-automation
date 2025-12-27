@@ -47,9 +47,9 @@ for bucket in buckets:
             "mode": "SUGGEST_ONLY",
             "timestamp": timestamp
         })
-
-# Write recommendation report
+# Merged with s3_remediation_recomendation
+""" Write recommendation report 
 with open("reports/s3_recommendations.json", "w") as f:
     json.dump(results, f, indent=2)
 
-print("S3 ACL remediation recommendations written to reports/s3_recommendations.json")
+print("S3 ACL remediation recommendations written to reports/s3_recommendations.json")"""

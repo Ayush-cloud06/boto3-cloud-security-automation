@@ -2,11 +2,31 @@
   {
     "control_id": "S3.PUBLIC_ACCESS_BLOCK",
     "resource_type": "s3_bucket",
-    "bucket_name": "boto3-demo-0666",
+    "bucket_name": "boto3-remediation-buckert-1",
     "severity": "HIGH",
     "finding": "Public access block is not fully enabled",
     "recommendation": "Enable all four public access block settings unless explicitly required",
     "mode": "SUGGEST_ONLY",
-    "timestamp": "2025-12-26T05:16:49.633950+00:00"
+    "timestamp": "2025-12-27T09:15:49.635066+00:00"
+  },
+  {
+    "control_id": "S3.VERSIONING",
+    "resource_type": "s3_bucket",
+    "bucket_name": "boto3-remediation-buckert-1",
+    "severity": "LOW",
+    "finding": "Bucket versioning is not enabled",
+    "recommendation": "Enable versioning to protect against accidental deletion or overwrite",
+    "mode": "SUGGEST_ONLY",
+    "timestamp": "2025-12-27T09:15:49.635066+00:00"
+  },
+  {
+    "control_id": "S3.PUBLIC_ACCESS_BLOCK",
+    "resource_type": "s3_bucket",
+    "bucket_name": "boto3-remediation-buckert-2",
+    "severity": "HIGH",
+    "finding": "Public access block is not fully enabled",
+    "recommendation": "Enable all four public access block settings unless explicitly required",
+    "mode": "SUGGEST_ONLY",
+    "timestamp": "2025-12-27T09:15:49.635066+00:00"
   }
 ]

@@ -102,8 +102,36 @@ for bucket in buckets:
                 "timestamp": timestamp  
             })
 
+
+        # ------ s3 Versioning --------
+    
+    try:
+        versioning = s3.get_bucket_versioning(Bucket=bucket_name)
+        status = versioning["Status"]
+
+        if status != "Enabled":
+            results.append({ "control_id": "S3.VERSIONING",
+            "resource_type": "s3_bucket",
+            "bucket_name": bucket_name,
+            "severity": "LOW",
+            "finding": "Bucket versioning is not enabled",
+            "recommendation": "Enable versioning to protect against accidental deletion or overwrite",
+            "mode": "SUGGEST_ONLY",
+            "timestamp": timestamp
+            })
+
+    except Exception as e:
+            results.append({ "control_id": "S3.VERSIONING",
+            "resource_type": "s3_bucket",
+            "bucket_name": bucket_name,
+            "severity": "UNKNOWN",
+            "finding": f"Unable to evaluate bucket versioning: {str(e)}",
+            "recommendation": "Manually review bucket versioning settings",
+            "mode": "SUGGEST_ONLY",
+            "timestamp": timestamp})
+
 # Write recommendation report
-with open("reports/3_recommendations.json", "w") as f:
+with open("reports/s3_recommendations.json", "w") as f:
     json.dump(results, f, indent=1)
 
 print("S3 remediation recommendations written to reports/s3_recommendations.json")
